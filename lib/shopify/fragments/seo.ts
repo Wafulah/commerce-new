@@ -1,8 +1,12 @@
-const seoFragment = /* GraphQL */ `
-  fragment seo on SEO {
-    description
-    title
-  }
-`;
+import type { AppSeo } from './fragments';
 
-export default seoFragment;
+/**
+ * Converts an Appwrite SEO-like object into an AppSeo
+ */
+export function shapeSeo(raw: any): AppSeo | undefined {
+  if (!raw) return undefined;
+  return {
+    title: raw.title,
+    description: raw.description,
+  };
+}
