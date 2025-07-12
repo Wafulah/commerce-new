@@ -1,45 +1,117 @@
-import cartFragment from '../fragments/cart';
+import { databases, ID } from '@/lib/appwrite';
+import type { AppCart, CartItem, AppProduct } from './fragments';
 
-export const addToCartMutation = /* GraphQL */ `
-  mutation addToCart($cartId: ID!, $lines: [CartLineInput!]!) {
-    cartLinesAdd(cartId: $cartId, lines: $lines) {
-      cart {
-        ...cart
-      }
-    }
-  }
-  ${cartFragment}
-`;
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+const CART_COLLECTION = 'carts';
 
-export const createCartMutation = /* GraphQL */ `
-  mutation createCart($lineItems: [CartLineInput!]) {
-    cartCreate(input: { lines: $lineItems }) {
-      cart {
-        ...cart
-      }
-    }
-  }
-  ${cartFragment}
-`;
+function shapeCart(raw: any): AppCart {
+  const items: CartItem[] = (raw.items || []).map((rawItem: any) => ({
+    $id: rawItem.$id,
+    quantity: rawItem.quantity,
+    product: rawItem.product as AppProduct,
+  }));
+  return {
+    $id: raw.$id,
+    userId: raw.userId,
+    items,
+    createdAt: raw.$createdAt,
+    updatedAt: raw.$updatedAt,
+  };
+}
 
-export const editCartItemsMutation = /* GraphQL */ `
-  mutation editCartItems($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-    cartLinesUpdate(cartId: $cartId, lines: $lines) {
-      cart {
-        ...cart
-      }
-    }
-  }
-  ${cartFragment}
-`;
+/**
+ * Creates a new cart.
+ */
+export async function createCartMutation(userId?: string): Promise<AppCart> {
+  const raw = await databases.createDocument(
+    DATABASE_ID,
+    CART_COLLECTION,
+    ID.unique(),
+    { userId, items: [] }
+  );
+  return shapeCart(raw);
+}
 
-export const removeFromCartMutation = /* GraphQL */ `
-  mutation removeFromCart($cartId: ID!, $lineIds: [ID!]!) {
-    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-      cart {
-        ...cart
-      }
-    }
+/**
+ * Adds quantity to existing or new CartItem.
+ */
+export async function addToCartMutation(
+  cartId: string,
+  product: AppProduct,
+  quantity: number
+): Promise<AppCart> {
+  const rawCart = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
+  let items: CartItem[] = (rawCart.items || []).map((rawItem: any) => ({
+    $id: rawItem.$id,
+    quantity: rawItem.quantity,
+    product: rawItem.product as AppProduct,
+  }));
+
+  const idx = items.findIndex(item => item.product.$id === product.$id);
+  if (idx >= 0) {
+    items[idx].quantity += quantity;
+  } else {
+    items.push({ $id: `item_${Date.now()}`, product, quantity });
   }
-  ${cartFragment}
-`;
+
+  const updated = await databases.updateDocument(
+    DATABASE_ID,
+    CART_COLLECTION,
+    cartId,
+    { items }
+  );
+  return shapeCart(updated);
+}
+
+/**
+ * Updates quantities for a list of CartItems.
+ */
+export async function editCartMutation(
+  cartId: string,
+  updates: { itemId: string; quantity: number }[]
+): Promise<AppCart> {
+  const rawCart = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
+  let items: CartItem[] = (rawCart.items || []).map((rawItem: any) => ({
+    $id: rawItem.$id,
+    quantity: rawItem.quantity,
+    product: rawItem.product as AppProduct,
+  }));
+
+  items = items.map(item => {
+    const u = updates.find(u => u.itemId === item.$id);
+    return u ? { ...item, quantity: u.quantity } : item;
+  });
+
+  const updated = await databases.updateDocument(
+    DATABASE_ID,
+    CART_COLLECTION,
+    cartId,
+    { items }
+  );
+  return shapeCart(updated);
+}
+
+/**
+ * Removes one or more CartItems.
+ */
+export async function removeFromCartMutation(
+  cartId: string,
+  itemIds: string[]
+): Promise<AppCart> {
+  const rawCart = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
+  let items: CartItem[] = (rawCart.items || []).map((rawItem: any) => ({
+    $id: rawItem.$id,
+    quantity: rawItem.quantity,
+    product: rawItem.product as AppProduct,
+  }));
+
+  items = items.filter(item => !itemIds.includes(item.$id));
+
+  const updated = await databases.updateDocument(
+    DATABASE_ID,
+    CART_COLLECTION,
+    cartId,
+    { items }
+  );
+  return shapeCart(updated);
+}
