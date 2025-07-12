@@ -1,10 +1,10 @@
-const imageFragment = /* GraphQL */ `
-  fragment image on Image {
-    url
-    altText
-    width
-    height
-  }
-`;
+import type { AppImage } from './fragments';
 
-export default imageFragment;
+// Maps raw Appwrite document to AppImage
+export function shapeImage(raw: any): AppImage {
+  return {
+    $id: raw.$id,
+    url: raw.url,
+    altText: raw.altText,
+  };
+}
