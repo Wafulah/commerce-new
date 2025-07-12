@@ -1,53 +1,18 @@
-import productFragment from './product';
+import type { AppCart, CartItem, AppProduct } from './fragments';
 
-const cartFragment = /* GraphQL */ `
-  fragment cart on Cart {
-    id
-    checkoutUrl
-    cost {
-      subtotalAmount {
-        amount
-        currencyCode
-      }
-      totalAmount {
-        amount
-        currencyCode
-      }
-      totalTaxAmount {
-        amount
-        currencyCode
-      }
-    }
-    lines(first: 100) {
-      edges {
-        node {
-          id
-          quantity
-          cost {
-            totalAmount {
-              amount
-              currencyCode
-            }
-          }
-          merchandise {
-            ... on ProductVariant {
-              id
-              title
-              selectedOptions {
-                name
-                value
-              }
-              product {
-                ...product
-              }
-            }
-          }
-        }
-      }
-    }
-    totalQuantity
-  }
-  ${productFragment}
-`;
+// Helper to map raw Appwrite document to frontend-friendly AppCart
+export function shapeCart(raw: any): AppCart {
+  const items: CartItem[] = (raw.items || []).map((rawItem: any) => ({
+    $id: rawItem.$id,
+    quantity: rawItem.quantity,
+    product: rawItem.product as AppProduct,
+  }));
 
-export default cartFragment;
+  return {
+    $id: raw.$id,
+    userId: raw.userId,
+    items,
+    createdAt: raw.$createdAt,
+    updatedAt: raw.$updatedAt,
+  };
+}
