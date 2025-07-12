@@ -1,64 +1,31 @@
-import imageFragment from './image';
-import seoFragment from './seo';
+import type { AppProduct, AppImage, AppSeo } from './fragments';
+import { shapeImage } from './image';
 
-const productFragment = /* GraphQL */ `
-  fragment product on Product {
-    id
-    handle
-    availableForSale
-    title
-    description
-    descriptionHtml
-    options {
-      id
-      name
-      values
-    }
-    priceRange {
-      maxVariantPrice {
-        amount
-        currencyCode
-      }
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    variants(first: 250) {
-      edges {
-        node {
-          id
-          title
-          availableForSale
-          selectedOptions {
-            name
-            value
-          }
-          price {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-    featuredImage {
-      ...image
-    }
-    images(first: 20) {
-      edges {
-        node {
-          ...image
-        }
-      }
-    }
-    seo {
-      ...seo
-    }
-    tags
-    updatedAt
-  }
-  ${imageFragment}
-  ${seoFragment}
-`;
+/**
+ * Maps a raw Appwrite product document to AppProduct
+ */
+export function shapeProduct(raw: any): AppProduct {
+  const image = raw.image ? shapeImage(raw.image) : undefined;
 
-export default productFragment;
+  const images: AppImage[] = Array.isArray(raw.images)
+    ? raw.images.map((img: any) => shapeImage(img))
+    : [];
+
+  const seo: AppSeo | undefined = raw.seo
+    ? {
+        title: raw.seo.title,
+        description: raw.seo.description,
+      }
+    : undefined;
+
+  return {
+    $id: raw.$id,
+    name: raw.name,
+    slug: raw.slug,
+    description: raw.description,
+    image: image!,
+    images,
+    price: raw.price,
+    seo,
+  };
+}
