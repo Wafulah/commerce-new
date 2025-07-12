@@ -1,41 +1,52 @@
-import seoFragment from '../fragments/seo';
+import { databases, Query } from '@/lib/appwrite';
+import { shapeSeo } from '../seo';
+import type { Page as AppPage } from '../fragments';
 
-const pageFragment = /* GraphQL */ `
-  fragment page on Page {
-    ... on Page {
-      id
-      title
-      handle
-      body
-      bodySummary
-      seo {
-        ...seo
-      }
-      createdAt
-      updatedAt
-    }
-  }
-  ${seoFragment}
-`;
+const DATABASE_ID         = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+const PAGES_COLLECTION    = 'pages';
 
-export const getPageQuery = /* GraphQL */ `
-  query getPage($handle: String!) {
-    pageByHandle(handle: $handle) {
-      ...page
-    }
-  }
-  ${pageFragment}
-`;
+/**
+ * Fetch a single Page by its handle.
+ *
+ * @param handle — The page slug/handle
+ * @returns The Page object, or undefined if not found
+ */
+export async function getPageQuery(handle: string): Promise<AppPage | undefined> {
+  const res = await databases.listDocuments(
+    DATABASE_ID,
+    PAGES_COLLECTION,
+    [ Query.equal('handle', handle) ]
+  );
+  const raw = res.documents[0];
+  if (!raw) return undefined;
 
-export const getPagesQuery = /* GraphQL */ `
-  query getPages {
-    pages(first: 100) {
-      edges {
-        node {
-          ...page
-        }
-      }
-    }
-  }
-  ${pageFragment}
-`;
+  return {
+    $id:        raw.$id,
+    title:      raw.title,
+    handle:     raw.handle,
+    body:       raw.body,
+    bodySummary:raw.bodySummary,
+    seo:        shapeSeo(raw.seo),
+    createdAt:  raw.$createdAt,
+    updatedAt:  raw.$updatedAt,
+  };
+}
+
+/**
+ * Fetch all Pages.
+ *
+ * @returns An array of Page objects
+ */
+export async function getPagesQuery(): Promise<AppPage[]> {
+  const res = await databases.listDocuments(DATABASE_ID, PAGES_COLLECTION);
+  return res.documents.map(raw => ({
+    $id:        raw.$id,
+    title:      raw.title,
+    handle:     raw.handle,
+    body:       raw.body,
+    bodySummary:raw.bodySummary,
+    seo:        shapeSeo(raw.seo),
+    createdAt:  raw.$createdAt,
+    updatedAt:  raw.$updatedAt,
+  }));
+}
