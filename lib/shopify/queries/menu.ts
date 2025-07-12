@@ -1,10 +1,28 @@
-export const getMenuQuery = /* GraphQL */ `
-  query getMenu($handle: String!) {
-    menu(handle: $handle) {
-      items {
-        title
-        url
-      }
-    }
+import { databases, Query } from '@/lib/appwrite';
+import type { Menu } from '../fragments';
+
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+const MENUS_COLLECTION = 'menus';
+
+/**
+ * Fetch the menu document by its handle and return its items.
+ *
+ * @param handle – The unique handle/key for the menu.
+ * @returns An array of Menu items (title + path).
+ */
+export async function getMenuQuery(handle: string): Promise<Menu[]> {
+  // Find the menu doc where handle matches
+  const res = await databases.listDocuments(
+    DATABASE_ID,
+    MENUS_COLLECTION,
+    [ Query.equal('handle', handle) ]
+  );
+
+  const menuDoc = res.documents[0];
+  if (!menuDoc || !Array.isArray(menuDoc.items)) {
+    return [];
   }
-`;
+
+  // Assuming items is stored as [{ title: string; path: string }]
+  return menuDoc.items as Menu[];
+}
