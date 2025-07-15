@@ -11,30 +11,30 @@ import {
   editCartMutation,
   removeFromCartMutation,
   getCartQuery as fetchCartQuery,
-} from "@/lib/appwrite/cart";
+} from "@/lib/appwrite/queries/cart";
 
 // Collection queries
 import {
   getCollectionQuery as fetchCollection,
   getCollectionsQuery as fetchCollections,
   getCollectionProductsQuery as fetchCollectionProducts,
-} from "@/lib/appwrite/collection";
+} from "@/lib/appwrite/queries/collection";
 
 // Menu query
-import { getMenuQuery as fetchMenu } from "@/lib/appwrite/menu";
+import { getMenuQuery as fetchMenu } from "@/lib/appwrite/queries/menu";
 
 // Page queries
 import {
   getPageQuery as fetchPage,
   getPagesQuery as fetchPages,
-} from "@/lib/appwrite/page";
+} from "@/lib/appwrite/queries/page";
 
 // Product queries
 import {
   getProductQuery as fetchProduct,
   getProductsQuery as fetchProducts,
   getProductRecommendationsQuery as fetchProductRecommendations,
-} from "@/lib/appwrite/product";
+} from "@/lib/appwrite/queries/product";
 
 // TYPES (optional, for clarity)
 import type {
