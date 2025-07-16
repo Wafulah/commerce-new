@@ -1,5 +1,5 @@
 import { databases, Query } from '@/lib/appwrite';
-import { shapeSeo } from '../seo';
+import { shapeSeo } from '../fragments/seo';
 import type { Page as AppPage } from '../fragments/fragments';
 
 const DATABASE_ID         = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
