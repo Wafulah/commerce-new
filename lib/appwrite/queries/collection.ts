@@ -1,7 +1,7 @@
 import { databases, Query } from '@/lib/appwrite';
 import { shapeCollection } from '../collection';
 import { shapeProduct } from '../fragments/product';
-import type { AppCollection, AppProduct } from '../fragments';
+import type { AppCollection, AppProduct } from '../fragments/fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTIONS_COLLECTION = 'collections';
