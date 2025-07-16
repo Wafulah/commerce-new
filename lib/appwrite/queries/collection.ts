@@ -1,5 +1,5 @@
 import { databases, Query } from '@/lib/appwrite';
-import { shapeCollection } from '../collection';
+import { shapeCollection } from '../fragments/collection';
 import { shapeProduct } from '../fragments/product';
 import type { AppCollection, AppProduct } from '../fragments/fragments';
 
