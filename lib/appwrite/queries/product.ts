@@ -1,6 +1,6 @@
 import { databases, Query } from '@/lib/appwrite';
-import { shapeProduct } from '../product';
-import type { AppProduct } from '../fragments';
+import { shapeProduct } from '../fragments/product';
+import type { AppProduct } from '../fragments/fragments';
 
 const DATABASE_ID          = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const PRODUCTS_COLLECTION  = 'products';
