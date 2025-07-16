@@ -4,6 +4,7 @@ import type { AppCart } from '../fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const CART_COLLECTION = 'carts';
+//
 
 /**
  * Retrieves and shapes a cart by its ID from Appwrite.
