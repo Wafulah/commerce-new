@@ -1,4 +1,4 @@
-import { revalidate } from 'lib/appwrite';
+import { revalidate } from 'lib/appwrite/appwrite';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
