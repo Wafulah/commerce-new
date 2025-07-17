@@ -160,7 +160,7 @@ export async function getProductRecommendations(
 // reimplemented using Next.js ISR or your own logic.
 // If you still need webhook-driven ISR, you could:
 //
-// export async function revalidate(req: NextRequest): Promise<NextResponse> {
-//   // implement your Appwrite‑triggered revalidation here
-//   return NextResponse.json({ status: 200 });
-// }
+export async function revalidate(req: NextRequest): Promise<NextResponse> {
+  // implement your Appwrite‑triggered revalidation here
+  return NextResponse.json({ status: 200 });
+}
