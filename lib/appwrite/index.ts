@@ -9,7 +9,10 @@ import {
   createCartMutation,
   addToCartMutation,
   editCartMutation,
-  removeFromCartMutation,
+  removeFromCartMutation
+} from "@/lib/appwrite/mutations/cart";
+
+import {
   getCartQuery as fetchCartQuery,
 } from "@/lib/appwrite/queries/cart";
 
