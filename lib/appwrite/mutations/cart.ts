@@ -1,4 +1,4 @@
-import { databases, ID } from '@/lib/appwrite';
+import { databases, ID } from '@/lib/appwrite/appwrite';
 import type { AppCart, CartItem, AppProduct } from './fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
