@@ -14,7 +14,7 @@ const { database } = await createAdminClient();
  */
 export async function getCartQuery(cartId: string): Promise<AppCart | undefined> {
   try {
-    const raw = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
+    const raw = await database.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
     return shapeCart(raw);
   } catch (error: any) {
     // If cart not found, return undefined
