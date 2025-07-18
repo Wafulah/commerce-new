@@ -1,9 +1,12 @@
+import { createAdminClient } from "@/lib/appwrite/appwrite";
 import { databases, Query } from 'node-appwrite';
 import { shapeSeo } from '../fragments/seo';
 import type { Page as AppPage } from '../fragments/fragments';
 
 const DATABASE_ID         = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const PAGES_COLLECTION    = 'pages';
+// Create the Appwrite client and get the database service 
+const { database } = await createAdminClient();   
 
 /**
  * Fetch a single Page by its handle.
