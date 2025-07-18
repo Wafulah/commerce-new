@@ -9,6 +9,12 @@ export interface AppImage {
   altText?: string;
 }
 
+export interface Image {
+  $id: string;
+  url: string;
+  altText?: string;
+}
+
 /**
  * Simple SEO metadata
  */
