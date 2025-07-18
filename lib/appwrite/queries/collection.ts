@@ -10,7 +10,6 @@ const PRODUCTS_COLLECTION    = 'products';
 // Create the Appwrite client and get the database service 
 const { database } = await createAdminClient();  
 
-import { createAdminClient } from "@/lib/appwrite";
 
 /**
  * Fetch a single collection by handle.
