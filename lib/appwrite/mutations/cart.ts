@@ -41,21 +41,26 @@ export async function createCartMutation(userId?: string): Promise<AppCart> {
  */
 export async function addToCartMutation(
   cartId: string,
-  product: AppProduct,
-  quantity: number
+  itemsToAdd: { merchandiseId: string; quantity: number }[]
 ): Promise<AppCart> {
   const rawCart = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
-  let items: CartItem[] = (rawCart.items || []).map((rawItem: any) => ({
-    $id: rawItem.$id,
-    quantity: rawItem.quantity,
-    product: rawItem.product as AppProduct,
+  let items: CartItem[] = (rawCart.items || []).map((raw: any) => ({
+    $id: raw.$id,
+    quantity: raw.quantity,
+    product: raw.product as AppProduct,
   }));
 
-  const idx = items.findIndex(item => item.product.$id === product.$id);
-  if (idx >= 0) {
-    items[idx].quantity += quantity;
-  } else {
-    items.push({ $id: `item_${Date.now()}`, product, quantity });
+  for (const { merchandiseId, quantity } of itemsToAdd) {
+    const idx = items.findIndex(item => item.product.$id === merchandiseId);
+    if (idx >= 0) {
+      items[idx].quantity += quantity;
+    } else {
+      items.push({
+        $id: `item_${merchandiseId}_${Date.now()}`,
+        product: /* fetch or pass product here */,
+        quantity,
+      });
+    }
   }
 
   const updated = await databases.updateDocument(
@@ -66,7 +71,6 @@ export async function addToCartMutation(
   );
   return shapeCart(updated);
 }
-
 /**
  * Updates quantities for a list of CartItems.
  */
