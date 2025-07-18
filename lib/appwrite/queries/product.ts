@@ -6,7 +6,7 @@ import type { AppProduct } from '../fragments/fragments';
 const DATABASE_ID          = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const PRODUCTS_COLLECTION  = 'products';
  // Create the Appwrite client and get the database service 
-const { database } = await createAdminClient();   
+const { databases } = await createAdminClient();   
 
 /**
  * Fetch a single product by its slug/handle.
