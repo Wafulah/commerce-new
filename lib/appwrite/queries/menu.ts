@@ -1,8 +1,11 @@
-import { databases, Query } from 'node-appwrite';
+import { createAdminClient } from "@/lib/appwrite/appwrite";
+import { Query } from 'node-appwrite';
 import type { Menu } from '../fragments/fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const MENUS_COLLECTION = 'menus';
+// Create the Appwrite client and get the database service 
+const { database } = await createAdminClient();  
 
 /**
  * Fetch the menu document by its handle and return its items.
