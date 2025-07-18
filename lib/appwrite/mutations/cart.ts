@@ -1,4 +1,5 @@
-import { databases, ID } from 'node-appwrite';
+import { createAdminClient } from "@/lib/appwrite/appwrite";
+import { ID } from 'node-appwrite';
 import type { AppCart, CartItem, AppProduct } from './fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
