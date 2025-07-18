@@ -1,4 +1,4 @@
-import { databases, Query } from '@/lib/appwrite/appwrite';
+import { databases, Query } from 'node-appwrite';
 import { shapeSeo } from '../fragments/seo';
 import type { Page as AppPage } from '../fragments/fragments';
 
