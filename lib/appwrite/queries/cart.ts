@@ -1,4 +1,4 @@
-import { databases } from '@/lib/appwrite/appwrite';
+import { databases } from 'node-appwrite';
 import { shapeCart } from '../fragments/cart';
 import type { AppCart } from '../fragments/fragments';
 
