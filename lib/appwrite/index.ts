@@ -58,12 +58,13 @@ export async function createCart(): Promise<Cart> {
 
 // — add lines to cart
 export async function addToCart(
-  productId: string,
-  quantity: number
+ items: { merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
   const cartId = cookies().get("cartId")?.value!;
-  return addToCartMutation(cartId, productId, quantity);
+  return addToCartMutation(cartId, items);
 }
+
+
 
 // — edit existing cart items
 export async function updateCart(
