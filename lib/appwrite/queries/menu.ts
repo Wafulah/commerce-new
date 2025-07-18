@@ -1,4 +1,4 @@
-import { databases, Query } from '@/lib/appwrite/appwrite';
+import { databases, Query } from 'node-appwrite';
 import type { Menu } from '../fragments/fragments';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
