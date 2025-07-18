@@ -6,7 +6,7 @@ const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const CART_COLLECTION = 'carts';
 
 // Create the Appwrite client and get the database service
-const { database } = await createAdminClient();
+const { databases } = await createAdminClient();
 
 function shapeCart(raw: any): AppCart {
   const items: CartItem[] = (raw.items || []).map((rawItem: any) => ({
