@@ -1,4 +1,5 @@
-import { databases, Query } from 'node-appwrite';
+import { createAdminClient } from "@/lib/appwrite";
+import { Query } from 'node-appwrite';
 import { shapeCollection } from '../fragments/collection';
 import { shapeProduct } from '../fragments/product';
 import type { AppCollection, AppProduct } from '../fragments/fragments';
@@ -6,6 +7,10 @@ import type { AppCollection, AppProduct } from '../fragments/fragments';
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTIONS_COLLECTION = 'collections';
 const PRODUCTS_COLLECTION    = 'products';
+// Create the Appwrite client and get the database service 
+const { database } = await createAdminClient();  
+
+import { createAdminClient } from "@/lib/appwrite";
 
 /**
  * Fetch a single collection by handle.
