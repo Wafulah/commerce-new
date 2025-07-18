@@ -8,7 +8,7 @@ const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTIONS_COLLECTION = 'collections';
 const PRODUCTS_COLLECTION    = 'products';
 // Create the Appwrite client and get the database service 
-const { database } = await createAdminClient();  
+const { databases } = await createAdminClient();  
 
 
 /**
