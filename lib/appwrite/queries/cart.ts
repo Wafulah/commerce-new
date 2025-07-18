@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/appwrite";
+import { createAdminClient } from "@/lib/appwrite/appwrite";
 import { shapeCart } from '../fragments/cart';
 import type { AppCart } from '../fragments/fragments';
 
