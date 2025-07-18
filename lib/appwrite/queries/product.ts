@@ -1,4 +1,4 @@
-import { databases, Query } from '@/lib/appwrite/appwrite';
+import { databases, Query } from 'node-appwrite';
 import { shapeProduct } from '../fragments/product';
 import type { AppProduct } from '../fragments/fragments';
 
