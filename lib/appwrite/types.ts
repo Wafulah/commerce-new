@@ -43,6 +43,23 @@ export interface AppProduct {
   updatedAt?: string;
 }
 
+export interface Product {
+  $id: string;
+  handle: string;
+  availableForSale: boolean;
+  title: string;
+  description: string;
+  descriptionHtml?: string;
+  options?: ProductOption[];
+  priceRange?: { min: Money; max: Money };
+  variants?: ProductVariant[];
+  featuredImage?: AppImage;
+  images?: AppImage[];
+  seo?: AppSeo;
+  tags?: string[];
+  updatedAt?: string;
+}
+
 /**
  * A single line item in a cart
  */
