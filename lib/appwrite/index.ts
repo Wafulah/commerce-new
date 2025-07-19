@@ -68,7 +68,7 @@ export async function addToCart(
 
 // — edit existing cart items
 export async function updateCart(
-  updates: { itemId: string; quantity: number }[]
+  updates: { id: string; merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
   const cartId = cookies().get("cartId")?.value!;
   return editCartMutation(cartId, updates);
