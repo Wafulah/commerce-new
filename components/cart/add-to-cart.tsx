@@ -68,10 +68,10 @@ export function AddToCart({ product }: { product: Product }) {
       (option) => option.value === state[option.name.toLowerCase()]
     )
   );
-  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
+  const defaultVariantId = variants?.length === 1 ? variants[0]?.id : undefined;
   const selectedVariantId = variant?.id || defaultVariantId;
   const addItemAction = formAction.bind(null, selectedVariantId);
-  const finalVariant = variants.find(
+  const finalVariant = variants?.find(
     (variant) => variant.id === selectedVariantId
   )!;
 
