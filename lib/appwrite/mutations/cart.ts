@@ -76,26 +76,47 @@ export async function addToCartMutation(
  */
 export async function editCartMutation(
   cartId: string,
-  updates: { itemId: string; quantity: number }[]
+  updates: { id: string; merchandiseId: string; quantity: number }[]
 ): Promise<AppCart> {
-  const rawCart = await databases.getDocument(DATABASE_ID, CART_COLLECTION, cartId);
-  let items: CartItem[] = (rawCart.items || []).map((rawItem: any) => ({
-    $id: rawItem.$id,
-    quantity: rawItem.quantity,
-    product: rawItem.product as AppProduct,
+  // Fetch the raw cart document
+  const rawCart = await databases.getDocument(
+    DATABASE_ID,
+    CART_COLLECTION,
+    cartId
+  );
+
+  // Shape existing items array
+  let items: CartItem[] = (rawCart.items || []).map((raw: any) => ({
+    $id: raw.$id,
+    quantity: raw.quantity,
+    product: raw.product as AppProduct,
   }));
 
+  // Apply each update by matching on line id
   items = items.map(item => {
-    const u = updates.find(u => u.itemId === item.$id);
-    return u ? { ...item, quantity: u.quantity } : item;
+    const u = updates.find(update => update.id === item.$id);
+
+    if (u) {
+      // (Optional) Verify merchandiseId matches:
+      if (u.merchandiseId !== item.product.$id) {
+        console.warn(
+          `Update for line ${u.id} passed merchandiseId ${u.merchandiseId}, but existing product is ${item.product.$id}`
+        );
+      }
+      return { ...item, quantity: u.quantity };
+    }
+
+    return item;
   });
 
+  // Persist the updated cart back to Appwrite
   const updated = await databases.updateDocument(
     DATABASE_ID,
     CART_COLLECTION,
     cartId,
     { items }
   );
+
   return shapeCart(updated);
 }
 
