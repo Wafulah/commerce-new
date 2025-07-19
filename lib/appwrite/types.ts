@@ -86,6 +86,20 @@ export interface AppCart {
   createdAt?: string;
   updatedAt?: string;
 }
+export interface Cart {
+  $id: string;
+  userId?: string;
+  items: CartItem[];
+  totalQuantity?: number;
+  cost?: {
+    subtotal: Money;
+    total: Money;
+    tax: Money;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 
 /**
  * A category or collection in your Appwrite “collections” collection
