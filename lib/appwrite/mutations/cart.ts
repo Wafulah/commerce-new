@@ -57,7 +57,7 @@ export async function addToCartMutation(
     } else {
       items.push({
         $id: `item_${merchandiseId}_${Date.now()}`,
-        product: /* fetch or pass product here */,
+        product,
         quantity,
       });
     }
