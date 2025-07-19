@@ -68,7 +68,7 @@ export async function updateItemQuantity(
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line: { id: string; merchandise: { id: string } }) => line.merchandise.id === merchandiseId
     );
 
     if (lineItem && lineItem.id) {
