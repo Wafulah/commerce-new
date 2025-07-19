@@ -64,7 +64,7 @@ export function AddToCart({ product }: { product: Product }) {
   const [message, formAction] = useActionState(addItem, null);
 
   const variant = variants?.find((variant: ProductVariant) =>
-    variant?.selectedOptions.every(
+    variant?.selectedOptions?.every(
       (option) => option.value === state[option.name.toLowerCase()]
     )
   );
