@@ -94,11 +94,7 @@ export interface AppCart {
   userId?: string;
   items: CartItem[];
   totalQuantity?: number;
-  cost?: {
-    subtotal: Money;
-    total: Money;
-    tax: Money;
-  };
+  cost: { totalAmount: Money }; 
   createdAt?: string;
   updatedAt?: string;
 }
@@ -107,11 +103,7 @@ export interface Cart {
   userId?: string;
   items: CartItem[];
   totalQuantity?: number;
-  cost?: {
-    subtotal: Money;
-    total: Money;
-    tax: Money;
-  };
+  cost: { totalAmount: Money }; 
   createdAt?: string;
   updatedAt?: string;
 }
