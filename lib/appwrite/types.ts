@@ -63,11 +63,27 @@ export interface Product {
 /**
  * A single line item in a cart
  */
+// Line item in the cart — mirrors the original Shopify `CartItem` shape
 export interface CartItem {
-  $id: string;
-  product: AppProduct;
-  quantity: number;
-  cost?: Money;
+  $id: string;     // Unique identifier for this cart line item
+  quantity: number;  // How many units of this variant are in the cart
+
+  cost: {
+    totalAmount: Money;  // The total cost for this line (quantity × unit price)
+  };
+
+  // Metadata about the product variant in the cart
+  merchandise: {
+    id: string;
+    title: string;
+    selectedOptions?: { name: string; value: string }[];  // e.g. size, color
+    product: {
+      id: string;
+      handle: string;
+      title: string;
+      featuredImage?: AppImage;  // Same structure as Shopify's image type
+    };
+  };
 }
 
 /**
