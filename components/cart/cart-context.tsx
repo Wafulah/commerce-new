@@ -59,7 +59,7 @@ function updateCartItem(
       ...item.cost,
       totalAmount: {
         ...item.cost.totalAmount,
-        amount: newTotalAmount as number
+        amount: Integer(newTotalAmount)
       }
     }
   };
