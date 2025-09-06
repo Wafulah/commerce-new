@@ -33,9 +33,9 @@ export interface AppProduct {
   title: string;
   description: string;
   descriptionHtml?: string;
-  options?: ProductOption[];
-  priceRange?: { min: Money; max: Money };
-  variants?: ProductVariant[];
+  options: ProductOption[];
+  priceRange: { maxVariantPrice: Money; minVariantPrice: Money };
+  variants: ProductVariant[];
   featuredImage?: AppImage;
   images?: AppImage[];
   seo?: AppSeo;
@@ -50,9 +50,9 @@ export interface Product {
   title: string;
   description: string;
   descriptionHtml?: string;
-  options?: ProductOption[];
-  priceRange?: { min: Money; max: Money };
-  variants?: ProductVariant[];
+  options: ProductOption[];
+  priceRange: { maxVariantPrice: Money; minVariantPrice: Money };
+  variants: ProductVariant[];
   featuredImage?: AppImage;
   images?: AppImage[];
   seo?: AppSeo;

@@ -36,3 +36,13 @@ export interface AppCart {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AppCollection {
+  $id: string;
+  handle: string;
+  title: string;
+  description?: string;
+  seo?: AppSeo;
+  updatedAt?: string;
+  path: string;
+}

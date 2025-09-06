@@ -27,9 +27,9 @@ export function VariantSelector({
   }
 
   const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
+    id: variant.$id,
     availableForSale: variant.availableForSale,
-    ...variant.selectedOptions.reduce(
+    ...variant.selectedOptions?.reduce(
       (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
       {}
     )
