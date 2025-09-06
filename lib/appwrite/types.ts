@@ -65,7 +65,7 @@ export interface Product {
  */
 // Line item in the cart — mirrors the original Shopify `CartItem` shape
 export interface CartItem {
-  $id: string;     // Unique identifier for this cart line item
+  $id?: string;     // Unique identifier for this cart line item
   quantity: number;  // How many units of this variant are in the cart
 
   cost: {
@@ -92,18 +92,26 @@ export interface CartItem {
 export interface AppCart {
   $id: string;
   userId?: string;
-  items: CartItem[];
+  lines: CartItem[];
   totalQuantity?: number;
-  cost: { totalAmount: Money }; 
+  cost: {
+    subtotalAmount: Money;
+    totalAmount: Money;
+    totalTaxAmount?: Money;  // optional tax field
+  };
   createdAt?: string;
   updatedAt?: string;
 }
 export interface Cart {
-  $id: string;
+  $id?: string;
   userId?: string;
-  items: CartItem[];
+  lines: CartItem[];
   totalQuantity?: number;
-  cost: { totalAmount: Money }; 
+  cost: {
+    subtotalAmount: Money;
+    totalAmount: Money;
+    totalTaxAmount?: Money;  // optional tax field
+  }; 
   createdAt?: string;
   updatedAt?: string;
 }
@@ -148,7 +156,7 @@ export interface AppPage {
  * Basic money type
  */
 export interface Money {
-  amount: number;
+  amount: string;
   currencyCode: string;
 }
 
@@ -171,3 +179,4 @@ export interface ProductVariant {
   selectedOptions?: { name: string; value: string }[];
   price: Money;
 }
+

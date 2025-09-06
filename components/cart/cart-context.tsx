@@ -59,7 +59,7 @@ function updateCartItem(
       ...item.cost,
       totalAmount: {
         ...item.cost.totalAmount,
-        amount: parseInt(newTotalAmount)
+        amount: newTotalAmount
       }
     }
   };
@@ -71,10 +71,10 @@ function createOrUpdateCartItem(
   product: Product
 ): CartItem {
   const quantity = existingItem ? existingItem.quantity + 1 : 1;
-  const totalAmount = calculateItemCost(quantity, variant.price.amount..toString());
+  const totalAmount = calculateItemCost(quantity, variant.price.amount.toString());
 
   return {
-    id: existingItem?.id,
+    $id: existingItem?.$id,
     quantity,
     cost: {
       totalAmount: {
@@ -83,11 +83,11 @@ function createOrUpdateCartItem(
       }
     },
     merchandise: {
-      id: variant.id,
+      id: variant.$id,
       title: variant.title,
       selectedOptions: variant.selectedOptions,
       product: {
-        id: product.id,
+        id: product.$id,
         handle: product.handle,
         title: product.title,
         featuredImage: product.featuredImage
@@ -118,7 +118,7 @@ function updateCartTotals(
 
 function createEmptyCart(): Cart {
   return {
-    id: undefined,
+    $id: undefined,
     checkoutUrl: '',
     totalQuantity: 0,
     lines: [],
@@ -165,7 +165,7 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
     case 'ADD_ITEM': {
       const { variant, product } = action.payload;
       const existingItem = currentCart.lines.find(
-        (item) => item.merchandise.id === variant.id
+        (item) => item.merchandise.id === variant.$id
       );
       const updatedItem = createOrUpdateCartItem(
         existingItem,
@@ -175,7 +175,7 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
 
       const updatedLines = existingItem
         ? currentCart.lines.map((item) =>
-            item.merchandise.id === variant.id ? updatedItem : item
+            item.merchandise.id === variant.$id ? updatedItem : item
           )
         : [...currentCart.lines, updatedItem];
 

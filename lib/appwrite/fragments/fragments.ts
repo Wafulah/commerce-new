@@ -22,6 +22,7 @@ export interface AppProduct {
   seo?: AppSeo;
 }
 
+//id
 export interface CartItem {
   $id: string;
   product: AppProduct;
@@ -31,7 +32,7 @@ export interface CartItem {
 export interface AppCart {
   $id: string;
   userId?: string;
-  items: CartItem[];
+  lines: CartItem[];
   createdAt: string;
   updatedAt: string;
 }
